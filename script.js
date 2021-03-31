@@ -6,8 +6,8 @@ $(document).ready(function() {
         htmlImages += "<img src=" + x + " alt='characterImg'>";
         $("#imageSquare").html(htmlImages);
     };
-    function createHtmlInfo(x) {
-        htmlInfo = "<p class='p-2 text-light'><strong>" + x + "</strong></p>";
+    function createHtmlInfo(y) {
+        htmlInfo = "<p class='p-2 text-light'><strong>" + y + "</strong></p>";
         $("#description").html(htmlInfo);
     };
         // function that spits out random numbers 1-150
@@ -26,55 +26,53 @@ $(document).ready(function() {
             
     }, 'json');
 
-    $(document).on("click", function() {
-        
-           // On Clicking of the button go to the next pokemon up, while grabbing the sprite and info
-        $("#getPoke").click( function () {
-            num++;
-            $("#imageSquare").empty();
-            $("#description").empty();
-            console.log(num);
-
-            $.get(`https://pokeapi.co/api/v2/pokemon/${num}/`, function (yes) {
-                
-                createHtmlImg(yes.sprites.front_default);
-                createHtmlInfo(yes.name);
-                // console.log(yes.name)
-            }, 'json');
+    // $(document).on("click", function() {
+    //     $("#imageSquare").empty();
+    //     $("#description").empty();
+    // });
+    // Grab a random pokemon when clicking on getRand Button
+    $("#getRand").click(function () {
+        $("#imageSquare").empty();
+        $("#description").empty();
+        getRandomInt(150);
+        var rand = getRandomInt(150);
+        $.get(`https://pokeapi.co/api/v2/pokemon/${rand}/`, function(des) {
+            createHtmlImg(des.sprites.front_default);
+            createHtmlInfo(des.name);
+            console.log(des.name);
         });
+        
+    });
+    // On Clicking of the button go to the next pokemon up, while grabbing the sprite and info
+    $("#getPoke").click( function () {
+        num++;
+        $("#imageSquare").empty();
+        $("#description").empty();
+        console.log(num);
 
-            // Grab a random pokemon when clicking on getRand Button
-        $("#getRand").click(function () {
-            $("#imageSquare").empty();
-            // $("#description").empty();
-            getRandomInt(150);
-            var rand = getRandomInt(150);
-            $.get(`https://pokeapi.co/api/v2/pokemon/${rand}/`, function(des) {
-                createHtmlImg(des.sprites.front_default);
-                createHtmlInfo(des.name);
-                console.log(des.name);
-            }, 'json');
+        $.get(`https://pokeapi.co/api/v2/pokemon/${num}/`, function (yes) {
             
-        });
-
-        
-        
-        });
+            createHtmlImg(yes.sprites.front_default);
+            createHtmlInfo(yes.name);
+            // console.log(yes.name)
+        }, 'json');
+    });
         // Search for a pokemon
-         $("#searchByName").submit(function() {
+        $("#searchByName").submit(function() {
             //  var name = $("#searchByName").formInteract();
-            var xy = document.getElementById("#searchByName").nodeValue;
+            var xy = document.getElementById("form").text();
             $("#imageSquare").empty();
             $("#description").empty();
 
               $.get("https://pokeapi.co/api/v2/pokemon/" + xy +"/",function (joy){
                  createHtmlImg(joy.sprites.front_default);
                  createHtmlInfo(joy.name);
-                 console.log(name);
-             },'json');
+                 console.log(xy);
+
+                },'json');
              
-             return false;
-         });
+            // return false;
+        });
      
 });
 
