@@ -4,64 +4,77 @@ $(document).ready(function() {
     var htmlInfo = "";
     function createHtmlImg(x) {
         htmlImages += "<img src=" + x + " alt='characterImg'>";
-        $("#imageSquare").append(htmlImages);
+        $("#imageSquare").html(htmlImages);
     };
     function createHtmlInfo(x) {
         htmlInfo = "<p class='p-2 text-light'><strong>" + x + "</strong></p>";
-        $("#description").append(htmlInfo);
+        $("#description").html(htmlInfo);
     };
         // function that spits out random numbers 1-150
     function getRandomInt(max) {
         return Math.floor(Math.random() * Math.floor(max));
     };
-    console.log(getRandomInt(150));
-    var rand = getRandomInt(150);
+    
+    // console.log(getRandomInt(150));
+    
     var num = 1;
         
         // First Load page with first pokemon
-    $.get(`https://pokeapi.co/api/v2/pokemon/1/`, function (res) {
+    $.get(`https://pokeapi.co/api/v2/pokemon/${num}/`, function (res) {
             createHtmlImg(res.sprites.front_default);
             createHtmlInfo(res.name);
+            
     }, 'json');
-    
+
     $(document).on("click", function() {
+        
            // On Clicking of the button go to the next pokemon up, while grabbing the sprite and info
-        $("#getPoke").on("click", function () {
-            num ++;
+        $("#getPoke").click( function () {
+            num++;
             $("#imageSquare").empty();
             $("#description").empty();
+            console.log(num);
 
-            $.get(`https://pokeapi.co/api/v2/pokemon/${num}/`, function (res) {
-                createHtmlImg(res.sprites.front_default);
-                createHtmlInfo(res.name);
+            $.get(`https://pokeapi.co/api/v2/pokemon/${num}/`, function (yes) {
+                
+                createHtmlImg(yes.sprites.front_default);
+                createHtmlInfo(yes.name);
+                // console.log(yes.name)
             }, 'json');
         });
 
             // Grab a random pokemon when clicking on getRand Button
-        $("#getRand").on("click", function () {
+        $("#getRand").click(function () {
             $("#imageSquare").empty();
-            $("#description").empty();
-
+            // $("#description").empty();
+            getRandomInt(150);
+            var rand = getRandomInt(150);
             $.get(`https://pokeapi.co/api/v2/pokemon/${rand}/`, function(des) {
                 createHtmlImg(des.sprites.front_default);
                 createHtmlInfo(des.name);
+                console.log(des.name);
             }, 'json');
             
         });
 
-            // Search for a pokemon
-        $("#searchByName").submit(function() {
-            var name = $("#searchByName").val();
+        
+        
+        });
+        // Search for a pokemon
+         $("#searchByName").submit(function() {
+            //  var name = $("#searchByName").formInteract();
+            var xy = document.getElementById("#searchByName").nodeValue;
             $("#imageSquare").empty();
             $("#description").empty();
 
-            $.get("https://pokeapi.co/api/v2/pokemon/" + name +"/",)
-                createHtmlImg(res.sprites.front_default);
-                createHtmlInfo(res.name);
-            return false;
-        });
-        
-        });
+              $.get("https://pokeapi.co/api/v2/pokemon/" + xy +"/",function (joy){
+                 createHtmlImg(joy.sprites.front_default);
+                 createHtmlInfo(joy.name);
+                 console.log(name);
+             },'json');
+             
+             return false;
+         });
      
 });
 
